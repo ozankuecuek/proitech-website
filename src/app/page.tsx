@@ -328,9 +328,9 @@ function Navigation() {
   const [mobileOpen, setMobileOpen] = useState(false)
   useMotionValueEvent(scrollY, "change", (v) => setScrolled(v > 60))
 
-  const bg = useTransform(scrollY, [0, 50], ["rgba(250,248,255,0)", "rgba(250,248,255,0.95)"])
-  const blur = useTransform(scrollY, [0, 50], ["blur(0px)", "blur(20px)"])
-  const borderOpacity = useTransform(scrollY, [0, 50], [0, 0.08])
+  const bg = useTransform(scrollY, [0, 100], ["rgba(250,248,255,0)", "rgba(250,248,255,0.7)"])
+  const blur = useTransform(scrollY, [0, 100], ["blur(0px)", "blur(20px)"])
+  const borderOpacity = useTransform(scrollY, [0, 100], [0, 0.08])
   const logoFilter = useTransform(
     scrollY,
     [0, 100],
@@ -340,20 +340,18 @@ function Navigation() {
 
   return (
     <motion.header
-      className="fixed top-0 inset-x-0 z-[9999]"
+      className="fixed top-0 inset-x-0 z-50"
       style={{
         backgroundColor: bg,
         backdropFilter: blur,
         WebkitBackdropFilter: blur,
         borderBottom: useTransform(borderOpacity, (v) => `1px solid rgba(0,25,68,${v})`),
-        transform: "translateZ(0)",
-        willChange: "transform, background-color, backdrop-filter",
       }}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
         <a href="/">
           <motion.div style={{ filter: logoFilter, scale: logoScale, transformOrigin: "left center" }}>
-            <Image src="/logo.webp" alt="itech cooling solutions" width={360} height={120} className="h-14 sm:h-16 lg:h-20 w-auto" priority />
+            <Image src="/logo.webp" alt="itech cooling solutions" width={360} height={120} className="h-32 w-auto" priority />
           </motion.div>
         </a>
 
@@ -440,7 +438,7 @@ export default function HomePage() {
 
       <main>
         {/* ── 1. HERO ───────────────────────────────────────────────────────── */}
-        <section className="relative z-0 min-h-screen overflow-hidden noise">
+        <section className="relative min-h-screen overflow-hidden noise">
           {/* Background video */}
           <video
             ref={heroVideoRef}
@@ -451,7 +449,7 @@ export default function HomePage() {
             disablePictureInPicture
             preload="auto"
             className="absolute inset-0 w-full h-full object-cover object-center"
-            style={{ zIndex: -1 }}
+            style={{ zIndex: 0 }}
           >
             <source src="/Video_Loop_for_Landing_Page.mp4" type="video/mp4" />
           </video>
