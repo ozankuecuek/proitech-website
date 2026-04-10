@@ -4,7 +4,6 @@ import {
   useRef,
   useEffect,
   useState,
-  useCallback,
   type ReactNode,
   type ElementType,
 } from "react"
@@ -13,8 +12,7 @@ import {
   useInView,
   useScroll,
   useTransform,
-  useMotionValue,
-  useSpring,
+  useReducedMotion,
 } from "framer-motion"
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -35,13 +33,16 @@ export function Reveal({
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: "-80px" })
+  const prefersReducedMotion = useReducedMotion()
 
-  const d = {
-    up: { y: distance, x: 0 },
-    down: { y: -distance, x: 0 },
-    left: { x: distance, y: 0 },
-    right: { x: -distance, y: 0 },
-  }[direction]
+  const d = prefersReducedMotion
+    ? { x: 0, y: 0 }
+    : {
+        up: { y: distance, x: 0 },
+        down: { y: -distance, x: 0 },
+        left: { x: distance, y: 0 },
+        right: { x: -distance, y: 0 },
+      }[direction]
 
   return (
     <motion.div
@@ -50,8 +51,8 @@ export function Reveal({
       initial={{ opacity: 0, ...d }}
       animate={isInView ? { opacity: 1, x: 0, y: 0 } : {}}
       transition={{
-        duration: 0.8,
-        delay,
+        duration: prefersReducedMotion ? 0.01 : 0.8,
+        delay: prefersReducedMotion ? 0 : delay,
         ease: [0.22, 1, 0.36, 1],
       }}
     >
@@ -78,7 +79,12 @@ export function TextReveal({
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: "-60px" })
+  const prefersReducedMotion = useReducedMotion()
   const words = text.split(" ")
+
+  if (prefersReducedMotion) {
+    return <Tag className={className}>{text}</Tag>
+  }
 
   return (
     <Tag ref={ref} className={`${className}`}>
@@ -124,16 +130,20 @@ export function Counter({
 }) {
   const ref = useRef<HTMLSpanElement>(null)
   const isInView = useInView(ref, { once: true })
-  const [count, setCount] = useState(0)
+  const prefersReducedMotion = useReducedMotion()
+  const [count, setCount] = useState(prefersReducedMotion ? target : 0)
 
   useEffect(() => {
     if (!isInView) return
+    if (prefersReducedMotion) {
+      setCount(target)
+      return
+    }
     let frame: number
     const start = performance.now()
 
     const step = (now: number) => {
       const progress = Math.min((now - start) / (duration * 1000), 1)
-      // ease-out-expo
       const eased = 1 - Math.pow(2, -10 * progress)
       setCount(parseFloat((eased * target).toFixed(decimals)))
       if (progress < 1) frame = requestAnimationFrame(step)
@@ -141,7 +151,7 @@ export function Counter({
 
     frame = requestAnimationFrame(step)
     return () => cancelAnimationFrame(frame)
-  }, [isInView, target, duration, decimals])
+  }, [isInView, target, duration, decimals, prefersReducedMotion])
 
   return (
     <span ref={ref} className={className}>
@@ -166,6 +176,18 @@ export function Marquee({
   className?: string
   reverse?: boolean
 }) {
+  const prefersReducedMotion = useReducedMotion()
+
+  if (prefersReducedMotion) {
+    return (
+      <div className={`overflow-x-auto ${className}`}>
+        <div className="flex whitespace-nowrap">
+          <div className="flex shrink-0 items-center">{children}</div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className={`overflow-hidden ${className}`}>
       <div
@@ -185,107 +207,39 @@ export function Marquee({
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   TiltCard — 3D perspective tilt on hover
+   TiltCard — DEPRECATED decorative hover tilt.
+   Kept as a passthrough for backwards compatibility; reduced motion always.
+   Do not use in new code — the brand is "motion as physics, not decoration".
    ═══════════════════════════════════════════════════════════════════════════ */
 export function TiltCard({
   children,
   className = "",
-  intensity = 8,
 }: {
   children: ReactNode
   className?: string
   intensity?: number
 }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const x = useMotionValue(0)
-  const y = useMotionValue(0)
-
-  const rotateXVal = useTransform(y, [-0.5, 0.5], [intensity, -intensity])
-  const rotateYVal = useTransform(x, [-0.5, 0.5], [-intensity, intensity])
-  const rotateX = useSpring(rotateXVal, { stiffness: 250, damping: 20 })
-  const rotateY = useSpring(rotateYVal, { stiffness: 250, damping: 20 })
-
-  const handleMouse = useCallback(
-    (e: React.MouseEvent) => {
-      if (!ref.current) return
-      const rect = ref.current.getBoundingClientRect()
-      x.set((e.clientX - rect.left) / rect.width - 0.5)
-      y.set((e.clientY - rect.top) / rect.height - 0.5)
-    },
-    [x, y]
-  )
-
-  const handleLeave = useCallback(() => {
-    x.set(0)
-    y.set(0)
-  }, [x, y])
-
-  return (
-    <motion.div
-      ref={ref}
-      className={className}
-      style={{
-        rotateX,
-        rotateY,
-        transformStyle: "preserve-3d",
-        perspective: 1200,
-      }}
-      onMouseMove={handleMouse}
-      onMouseLeave={handleLeave}
-    >
-      {children}
-    </motion.div>
-  )
+  return <div className={className}>{children}</div>
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   Magnetic — element subtly follows cursor
+   Magnetic — DEPRECATED cursor-follow.
+   Passthrough wrapper, no effect. Kept for backwards compatibility.
    ═══════════════════════════════════════════════════════════════════════════ */
 export function Magnetic({
   children,
   className = "",
-  strength = 0.35,
 }: {
   children: ReactNode
   className?: string
   strength?: number
 }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const x = useMotionValue(0)
-  const y = useMotionValue(0)
-  const springX = useSpring(x, { stiffness: 180, damping: 12 })
-  const springY = useSpring(y, { stiffness: 180, damping: 12 })
-
-  const handleMouse = useCallback(
-    (e: React.MouseEvent) => {
-      if (!ref.current) return
-      const rect = ref.current.getBoundingClientRect()
-      x.set((e.clientX - rect.left - rect.width / 2) * strength)
-      y.set((e.clientY - rect.top - rect.height / 2) * strength)
-    },
-    [x, y, strength]
-  )
-
-  const handleLeave = useCallback(() => {
-    x.set(0)
-    y.set(0)
-  }, [x, y])
-
-  return (
-    <motion.div
-      ref={ref}
-      className={`inline-flex ${className}`}
-      style={{ x: springX, y: springY }}
-      onMouseMove={handleMouse}
-      onMouseLeave={handleLeave}
-    >
-      {children}
-    </motion.div>
-  )
+  return <span className={`inline-flex ${className}`}>{children}</span>
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
    HorizontalScroll — vertical scroll → horizontal motion
+   Falls back to native horizontal overflow when reduced motion is preferred.
    ═══════════════════════════════════════════════════════════════════════════ */
 export function HorizontalScroll({
   children,
@@ -297,6 +251,17 @@ export function HorizontalScroll({
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: containerRef })
   const x = useTransform(scrollYProgress, [0.05, 0.95], ["0%", "-65%"])
+  const prefersReducedMotion = useReducedMotion()
+
+  if (prefersReducedMotion) {
+    return (
+      <div className={`overflow-x-auto ${className}`}>
+        <div className="flex gap-6 px-6 lg:px-12 py-20 snap-x snap-mandatory">
+          {children}
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div ref={containerRef} className={`relative ${className}`} style={{ height: "280vh" }}>
@@ -323,6 +288,7 @@ export function StaggerContainer({
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: "-60px" })
+  const prefersReducedMotion = useReducedMotion()
 
   return (
     <motion.div
@@ -330,7 +296,10 @@ export function StaggerContainer({
       className={className}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
-      variants={{ visible: { transition: { staggerChildren: stagger } }, hidden: {} }}
+      variants={{
+        visible: { transition: { staggerChildren: prefersReducedMotion ? 0 : stagger } },
+        hidden: {},
+      }}
     >
       {children}
     </motion.div>
@@ -344,16 +313,23 @@ export function StaggerItem({
   children: ReactNode
   className?: string
 }) {
+  const prefersReducedMotion = useReducedMotion()
+
   return (
     <motion.div
       className={className}
       variants={{
-        hidden: { opacity: 0, y: 35, filter: "blur(4px)" },
+        hidden: prefersReducedMotion
+          ? { opacity: 0 }
+          : { opacity: 0, y: 35, filter: "blur(4px)" },
         visible: {
           opacity: 1,
           y: 0,
           filter: "blur(0px)",
-          transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+          transition: {
+            duration: prefersReducedMotion ? 0.01 : 0.7,
+            ease: [0.22, 1, 0.36, 1],
+          },
         },
       }}
     >
@@ -363,52 +339,19 @@ export function StaggerItem({
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   GlowTracker — radial gradient follows cursor on a section
+   GlowTracker — DEPRECATED cursor-follow radial glow.
+   Passthrough container, no effect. Kept for backwards compatibility.
    ═══════════════════════════════════════════════════════════════════════════ */
 export function GlowTracker({
   children,
   className = "",
-  color = "rgba(188,1,0,0.12)",
-  size = 700,
 }: {
   children: ReactNode
   className?: string
   color?: string
   size?: number
 }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const mouseX = useMotionValue(-1000)
-  const mouseY = useMotionValue(-1000)
-  const springX = useSpring(mouseX, { stiffness: 80, damping: 30 })
-  const springY = useSpring(mouseY, { stiffness: 80, damping: 30 })
-
-  const handleMouse = useCallback(
-    (e: React.MouseEvent) => {
-      if (!ref.current) return
-      const rect = ref.current.getBoundingClientRect()
-      mouseX.set(e.clientX - rect.left)
-      mouseY.set(e.clientY - rect.top)
-    },
-    [mouseX, mouseY]
-  )
-
-  return (
-    <div ref={ref} className={`relative ${className}`} onMouseMove={handleMouse}>
-      <motion.div
-        className="pointer-events-none absolute z-0 rounded-full"
-        style={{
-          left: springX,
-          top: springY,
-          width: size,
-          height: size,
-          x: "-50%",
-          y: "-50%",
-          background: `radial-gradient(circle, ${color} 0%, transparent 70%)`,
-        }}
-      />
-      <div className="relative z-10">{children}</div>
-    </div>
-  )
+  return <div className={`relative ${className}`}>{children}</div>
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -429,6 +372,11 @@ export function Parallax({
     offset: ["start end", "end start"],
   })
   const y = useTransform(scrollYProgress, [0, 1], [speed * -80, speed * 80])
+  const prefersReducedMotion = useReducedMotion()
+
+  if (prefersReducedMotion) {
+    return <div className={`relative ${className}`}>{children}</div>
+  }
 
   return (
     <div ref={ref} className={`relative overflow-hidden ${className}`}>
@@ -443,6 +391,7 @@ export function Parallax({
 export function LineReveal({ className = "" }: { className?: string }) {
   const ref = useRef<SVGSVGElement>(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const prefersReducedMotion = useReducedMotion()
 
   return (
     <svg
@@ -458,9 +407,9 @@ export function LineReveal({ className = "" }: { className?: string }) {
         y2="100"
         stroke="currentColor"
         strokeWidth="1"
-        initial={{ pathLength: 0 }}
+        initial={{ pathLength: prefersReducedMotion ? 1 : 0 }}
         animate={isInView ? { pathLength: 1 } : {}}
-        transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: prefersReducedMotion ? 0.01 : 1.8, ease: [0.22, 1, 0.36, 1] }}
       />
     </svg>
   )

@@ -1,29 +1,17 @@
 "use client"
 
-import { useRef, useCallback, useState, useEffect } from "react"
-import { motion, useScroll, useTransform, useMotionValue, useSpring, useMotionValueEvent } from "framer-motion"
+import { useRef, useState, useEffect } from "react"
+import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion"
 import {
   ArrowRight,
   ChevronRight,
   Thermometer,
   Zap,
-  Shield,
-  Settings2,
   MapPin,
   Phone,
   Mail,
-  CheckCircle2,
-  Award,
-  Wrench,
-  TrendingDown,
-  Clock,
   FlaskConical,
-  Layers,
   Cpu,
-  Wind,
-  Droplets,
-  BarChart3,
-  Calendar,
   MessageSquare,
   ArrowUpRight,
   Menu,
@@ -33,7 +21,6 @@ import { Button } from "@/components/ui/button"
 import {
   Reveal,
   TextReveal,
-  Counter,
   Marquee,
   TiltCard,
   Magnetic,
@@ -41,7 +28,6 @@ import {
   StaggerContainer,
   StaggerItem,
   GlowTracker,
-  Parallax,
   LineReveal,
 } from "@/components/motion"
 
@@ -54,10 +40,10 @@ function HeroDashboard() {
 
   /* Marker positions along the radial structure — placed at clock-like positions */
   const markers = [
-    { angle: -55, label: "Cooling Capacity", value: "2,3–629 kW", delay: 1.6 },
-    { angle: 15, label: "Series Architecture", value: "MINI / MIDI / MAXI / MASTER", delay: 1.9 },
-    { angle: 85, label: "Compressor Technology", value: "Scroll Compressor", delay: 2.2 },
-    { angle: -130, label: "System Design", value: "Hydronic Module + Buffer Tank", delay: 2.5 },
+    { angle: -55, label: "Kälteleistung", value: "2,3–629 kW", delay: 1.6 },
+    { angle: 15, label: "Baureihen", value: "MINI / MIDI / MAXI / MASTER", delay: 1.9 },
+    { angle: 85, label: "Verdichter", value: "Scroll-Verdichter", delay: 2.2 },
+    { angle: -130, label: "Systemaufbau", value: "Hydronikmodul + Pufferspeicher", delay: 2.5 },
   ]
 
   return (
@@ -104,7 +90,7 @@ function HeroDashboard() {
           {/* Red accent arc — ~120 degrees */}
           <path
             d="M 220 10 A 210 210 0 0 1 430 220"
-            stroke="#bc0100"
+            style={{ stroke: "var(--secondary)" }}
             strokeWidth="1.5"
             strokeLinecap="round"
             opacity="0.35"
@@ -133,7 +119,6 @@ function HeroDashboard() {
           {/* Animated red arc — sweeps ~270 degrees */}
           <motion.circle
             cx="195" cy="195" r={arcRadius}
-            stroke="#bc0100"
             strokeWidth="2.5"
             strokeLinecap="round"
             strokeDasharray={`${arcCircumference * 0.75} ${arcCircumference}`}
@@ -141,7 +126,7 @@ function HeroDashboard() {
             animate={{ strokeDashoffset: arcCircumference * 0.25 }}
             transition={{ duration: 2.5, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
             transform="rotate(-135 195 195)"
-            style={{ filter: "drop-shadow(0 0 6px rgba(188,1,0,0.4))" }}
+            style={{ stroke: "var(--secondary)", filter: "drop-shadow(0 0 6px color-mix(in oklch, var(--secondary) 40%, transparent))" }}
           />
           {/* Secondary thin arc — white, offset */}
           <motion.circle
@@ -169,12 +154,12 @@ function HeroDashboard() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
-          {/* NOVATECH wordmark */}
+          {/* PRO ITECH wordmark */}
           <span
             className="text-white font-bold tracking-[0.18em]"
-            style={{ fontFamily: "var(--font-space-grotesk)", fontSize: "clamp(1.25rem, 4vw, 1.75rem)", lineHeight: 1 }}
+            style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.25rem, 4vw, 1.75rem)", lineHeight: 1 }}
           >
-            NOVATECH
+            PRO ITECH
           </span>
           {/* Thin separator line */}
           <motion.span
@@ -186,9 +171,9 @@ function HeroDashboard() {
           {/* Subline */}
           <span
             className="text-white/40 tracking-[0.25em] uppercase"
-            style={{ fontFamily: "var(--font-space-grotesk)", fontSize: "clamp(0.5rem, 1.5vw, 0.625rem)", lineHeight: 1 }}
+            style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(0.5rem, 1.5vw, 0.625rem)", lineHeight: 1 }}
           >
-            Air Cooled Chiller
+            Industrielle Prozesskühlung
           </span>
         </motion.div>
       </div>
@@ -209,7 +194,7 @@ function HeroDashboard() {
         return (
           <motion.div
             key={i}
-            className="absolute"
+            className="absolute hidden lg:block"
             style={{ left: 0, top: 0, width: "100%", height: "100%" }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -218,11 +203,11 @@ function HeroDashboard() {
             {/* Connector line + dot on arc */}
             <svg viewBox="0 0 500 500" className="absolute inset-0 w-full h-full" fill="none">
               {/* Glow dot at anchor */}
-              <circle cx={ax} cy={ay} r="3" fill="#bc0100" opacity="0.9">
+              <circle cx={ax} cy={ay} r="3" opacity="0.9" style={{ fill: "var(--secondary)" }}>
                 <animate attributeName="r" values="3;4.5;3" dur="3s" repeatCount="indefinite" />
                 <animate attributeName="opacity" values="0.9;0.5;0.9" dur="3s" repeatCount="indefinite" />
               </circle>
-              <circle cx={ax} cy={ay} r="7" fill="none" stroke="#bc0100" strokeWidth="0.5" opacity="0.3">
+              <circle cx={ax} cy={ay} r="7" fill="none" strokeWidth="0.5" opacity="0.3" style={{ stroke: "var(--secondary)" }}>
                 <animate attributeName="r" values="7;11;7" dur="3s" repeatCount="indefinite" />
                 <animate attributeName="opacity" values="0.3;0.1;0.3" dur="3s" repeatCount="indefinite" />
               </circle>
@@ -248,7 +233,7 @@ function HeroDashboard() {
               </span>
               <span
                 className="text-white/80 font-medium mt-0.5"
-                style={{ fontFamily: "var(--font-space-grotesk)", fontSize: "clamp(0.5rem, 1.4vw, 0.7rem)", lineHeight: 1.3 }}
+                style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(0.5rem, 1.4vw, 0.7rem)", lineHeight: 1.3 }}
               >
                 {marker.value}
               </span>
@@ -267,7 +252,12 @@ function HeroDashboard() {
         <motion.div
           key={`dot-${i}`}
           className="absolute w-[3px] h-[3px] rounded-full"
-          style={{ left: dot.x, top: dot.y, background: "rgba(188,1,0,0.25)", boxShadow: "0 0 6px rgba(188,1,0,0.15)" }}
+          style={{
+            left: dot.x,
+            top: dot.y,
+            background: "color-mix(in oklch, var(--secondary) 25%, transparent)",
+            boxShadow: "0 0 6px color-mix(in oklch, var(--secondary) 15%, transparent)",
+          }}
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: dot.delay, type: "spring" }}
@@ -278,7 +268,8 @@ function HeroDashboard() {
       <div
         className="absolute inset-[-10px] rounded-full pointer-events-none"
         style={{
-          background: "radial-gradient(circle, transparent 60%, rgba(188,1,0,0.03) 80%, transparent 100%)",
+          background:
+            "radial-gradient(circle, transparent 60%, color-mix(in oklch, var(--secondary) 3%, transparent) 80%, transparent 100%)",
         }}
       />
     </div>
@@ -298,11 +289,11 @@ function SectionLabel({ children, light = false }: { children: React.ReactNode; 
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   SECTION HEADING (reusable)
+   SECTION HEADING (reusable) — quiet fade-in, no word-by-word reveal.
+   The hero H1 is the one orchestrated moment; section headings stay composed.
    ───────────────────────────────────────────────────────────────────────────── */
 function SectionHeading({
   text,
-  light = false,
   className = "",
 }: {
   text: string
@@ -310,12 +301,9 @@ function SectionHeading({
   className?: string
 }) {
   return (
-    <TextReveal
-      text={text}
-      tag="h2"
-      className={`${className}`}
-      stagger={0.035}
-    />
+    <Reveal>
+      <h2 className={className}>{text}</h2>
+    </Reveal>
   )
 }
 
@@ -438,7 +426,7 @@ export default function HomePage() {
 
       <main>
         {/* ── 1. HERO ───────────────────────────────────────────────────────── */}
-        <section className="relative min-h-screen overflow-hidden noise">
+        <section className="relative lg:min-h-screen overflow-hidden noise">
           {/* Background video */}
           <video
             ref={heroVideoRef}
@@ -465,10 +453,10 @@ export default function HomePage() {
             style={{ background: "radial-gradient(circle, rgba(188,1,0,0.15) 0%, transparent 60%)", zIndex: 2 }}
           />
 
-          <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-6 lg:px-12 pt-20 sm:pt-28 lg:pt-32 pb-12 sm:pb-20">
-            <div className="grid lg:grid-cols-12 gap-6 sm:gap-8 items-center min-h-[calc(100svh-5rem)] sm:min-h-[calc(100svh-8rem)] lg:min-h-[calc(100svh-10rem)]">
+          <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-6 lg:px-12 pt-24 sm:pt-28 lg:pt-32 pb-16 sm:pb-24 lg:pb-20">
+            <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center lg:min-h-[calc(100svh-10rem)]">
               {/* Content */}
-              <div className="lg:col-span-6 xl:col-span-7 flex flex-col gap-5 sm:gap-8">
+              <div className="lg:col-span-6 xl:col-span-7 flex flex-col gap-6 sm:gap-8">
                 <Reveal delay={0.1}>
                   <SectionLabel light>Industrielle Prozesskühlung</SectionLabel>
                 </Reveal>
@@ -529,10 +517,11 @@ export default function HomePage() {
                 </Reveal>
               </div>
 
-              {/* Dashboard visualization */}
-              <div className="hidden lg:flex lg:col-span-6 xl:col-span-5 justify-end">
+              {/* Dashboard visualization — brand medallion on all sizes,
+                  full instrument with callouts on lg+ */}
+              <div className="flex lg:col-span-6 xl:col-span-5 justify-center lg:justify-end">
                 <motion.div
-                  className="w-full max-w-[320px] sm:max-w-[400px] md:max-w-[460px] lg:max-w-[520px]"
+                  className="w-full max-w-[260px] sm:max-w-[320px] lg:max-w-[520px]"
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 1.2, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
@@ -544,7 +533,7 @@ export default function HomePage() {
           </div>
 
           {/* Bottom gradient fade */}
-          <div className="absolute bottom-0 inset-x-0 h-32" style={{ background: "linear-gradient(to bottom, transparent, #e1e8ff)" }} />
+          <div className="absolute bottom-0 inset-x-0 h-32" style={{ background: "linear-gradient(to bottom, transparent, var(--surface-container-high))" }} />
         </section>
 
         {/* ── MARQUEE STRIP ─────────────────────────────────────────────────── */}
@@ -571,8 +560,8 @@ export default function HomePage() {
         {/* ── 2. TRUST / PROOF POINTS ───────────────────────────────────────── */}
         <section className="bg-surface-container-low section-pad">
           <div className="max-w-7xl mx-auto px-6 lg:px-12">
-            <div className="grid lg:grid-cols-12 gap-16 items-start">
-              <div className="lg:col-span-4 flex flex-col gap-5 lg:sticky lg:top-28">
+            <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-start">
+              <div className="lg:col-span-5 xl:col-span-4 flex flex-col gap-6 lg:sticky lg:top-28">
                 <Reveal>
                   <SectionLabel>Warum pro itech</SectionLabel>
                 </Reveal>
@@ -581,7 +570,7 @@ export default function HomePage() {
                   className="text-on-surface"
                 />
                 <Reveal delay={0.2}>
-                  <p className="body-md text-muted-foreground leading-relaxed">
+                  <p className="body-md text-muted-foreground leading-relaxed max-w-sm">
                     Seit Jahren entwickeln und liefern wir Kälte- und Temperierlösungen
                     für anspruchsvolle Prozessanwendungen — mit technischer Tiefe,
                     Serviceorganisation und dem Anspruch auf niedrigsten TCO.
@@ -589,28 +578,45 @@ export default function HomePage() {
                 </Reveal>
               </div>
 
-              <StaggerContainer stagger={0.08} className="lg:col-span-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {[
-                  { icon: Award, title: "ISO 9001 zertifiziert", desc: "Qualitätsmanagementsystem nach internationalem Standard für verlässliche Prozesse." },
-                  { icon: CheckCircle2, title: "Geprüfte Anlagen", desc: "Jede Anlage wird auf modernen Prüfständen getestet und mit Prüfzeugnis geliefert." },
-                  { icon: MapPin, title: "Service aus Deutschland", desc: "Serviceorganisation mit regionalem Netzwerk — schnelle Reaktionszeiten inklusive." },
-                  { icon: Settings2, title: "Individuelle Auslegung", desc: "Systemauslegung nach Ihrer Prozesslast, nicht nach Katalog. Technische Beratung inklusive." },
-                  { icon: TrendingDown, title: "Niedriger TCO", desc: "Energieeffiziente Systeme und Investitionssicherheit durch wirtschaftliche Betriebskosten." },
-                  { icon: Layers, title: "Breites Portfolio", desc: "Von Standardchillern bis zu Sonderlösungen für natürliche Kältemittel und Hochtemperatur." },
-                ].map(({ icon: Icon, title, desc }) => (
-                  <StaggerItem key={title}>
-                    <TiltCard className="h-full" intensity={6}>
-                      <div className="flex flex-col gap-3 p-6 h-full bg-surface hover:bg-surface-container-high transition-colors duration-300 shadow-ambient group">
-                        <div className="flex items-center justify-center w-10 h-10 bg-primary/[0.06] rounded-sm group-hover:bg-primary/[0.1] transition-colors duration-300">
-                          <Icon className="w-[18px] h-[18px] text-primary" strokeWidth={1.5} />
+              <div className="lg:col-span-7 xl:col-span-7 xl:col-start-6">
+                <StaggerContainer stagger={0.08} className="flex flex-col">
+                  {[
+                    { number: "01", title: "ISO 9001 zertifiziert", desc: "Qualitätsmanagementsystem nach internationalem Standard für verlässliche Prozesse." },
+                    { number: "02", title: "Geprüfte Anlagen", desc: "Jede Anlage wird auf modernen Prüfständen getestet und mit Prüfzeugnis ausgeliefert." },
+                    { number: "03", title: "Service aus Deutschland", desc: "Serviceorganisation mit regionalem Netzwerk — schnelle Reaktionszeiten inklusive." },
+                    { number: "04", title: "Individuelle Auslegung", desc: "Systemauslegung nach Ihrer Prozesslast, nicht nach Katalog. Technische Beratung inklusive." },
+                    { number: "05", title: "Niedriger TCO", desc: "Energieeffiziente Systeme und Investitionssicherheit durch wirtschaftliche Betriebskosten." },
+                    { number: "06", title: "Breites Portfolio", desc: "Von Standardchillern bis zu Sonderlösungen für natürliche Kältemittel und Hochtemperatur." },
+                  ].map(({ number, title, desc }, i) => (
+                    <StaggerItem key={number}>
+                      <div
+                        className="group grid grid-cols-[auto_1fr] gap-6 lg:gap-10 items-baseline"
+                        style={{
+                          paddingBlock: i === 0 ? "0 clamp(2.25rem, 4vw, 3rem)" : "clamp(2.25rem, 4vw, 3rem)",
+                        }}
+                      >
+                        <span
+                          className="tabular text-on-surface/30 group-hover:text-secondary transition-colors duration-500 shrink-0"
+                          style={{
+                            fontFamily: "var(--font-heading)",
+                            fontSize: "clamp(1.75rem, 3.2vw, 2.625rem)",
+                            fontWeight: 400,
+                            letterSpacing: "-0.02em",
+                            lineHeight: 0.9,
+                            fontVariationSettings: "'wdth' 95",
+                          }}
+                        >
+                          {number}
+                        </span>
+                        <div className="flex flex-col gap-2.5 max-w-xl">
+                          <h3 className="title-md text-on-surface">{title}</h3>
+                          <p className="body-md text-muted-foreground leading-relaxed">{desc}</p>
                         </div>
-                        <h3 className="title-sm font-semibold text-on-surface">{title}</h3>
-                        <p className="body-sm text-muted-foreground leading-relaxed">{desc}</p>
                       </div>
-                    </TiltCard>
-                  </StaggerItem>
-                ))}
-              </StaggerContainer>
+                    </StaggerItem>
+                  ))}
+                </StaggerContainer>
+              </div>
             </div>
           </div>
         </section>
@@ -640,8 +646,8 @@ export default function HomePage() {
                 <TiltCard className="h-full" intensity={5}>
                   <a href="#" className="group relative flex flex-col justify-end h-full p-8 lg:p-10 rounded-sm shadow-ambient overflow-hidden">
                     <Image src="/kaeltemaschine.png" alt="" fill className="object-cover object-center transition-transform duration-[800ms] ease-out group-hover:scale-[1.06]" sizes="(max-width: 768px) 100vw, 58vw" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#001030] via-[#001030]/60 to-transparent opacity-90" />
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#001b46]/30 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[var(--primary-deep)] via-[color-mix(in_oklch,var(--primary-deep)_60%,transparent)] to-transparent opacity-90" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-[color-mix(in_oklch,var(--primary)_30%,transparent)] to-transparent" />
                     <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-500" />
 
                     <div className="relative z-10 flex flex-col gap-5">
@@ -670,8 +676,8 @@ export default function HomePage() {
                 <TiltCard className="h-full" intensity={6}>
                   <a href="#" className="group relative flex flex-col justify-end h-full p-7 rounded-sm shadow-ambient overflow-hidden">
                     <Image src="/temperiergeraete.png" alt="" fill className="object-cover object-[center_20%] transition-transform duration-[800ms] ease-out group-hover:scale-[1.06]" sizes="(max-width: 768px) 100vw, 42vw" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#001030] via-[#001030]/60 to-transparent opacity-90" />
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#001b46]/30 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[var(--primary-deep)] via-[color-mix(in_oklch,var(--primary-deep)_60%,transparent)] to-transparent opacity-90" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-[color-mix(in_oklch,var(--primary)_30%,transparent)] to-transparent" />
                     <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-500" />
 
                     <div className="relative z-10">
@@ -700,8 +706,8 @@ export default function HomePage() {
                     <TiltCard key={title} className="h-full" intensity={7}>
                       <a href="#" className="group relative flex flex-col justify-end h-full p-6 rounded-sm shadow-ambient overflow-hidden">
                         <Image src={img} alt="" fill className="object-cover object-center transition-transform duration-[800ms] ease-out group-hover:scale-[1.06]" sizes="(max-width: 768px) 50vw, 21vw" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#001030] via-[#001030]/60 to-transparent opacity-90" />
-                        <div className="absolute inset-0 bg-gradient-to-br from-[#001b46]/30 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[var(--primary-deep)] via-[color-mix(in_oklch,var(--primary-deep)_60%,transparent)] to-transparent opacity-90" />
+                        <div className="absolute inset-0 bg-gradient-to-br from-[color-mix(in_oklch,var(--primary)_30%,transparent)] to-transparent" />
                         <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-500" />
 
                         <div className="relative z-10">
@@ -726,11 +732,7 @@ export default function HomePage() {
             {/* Sticky label */}
             <div className="shrink-0 w-[340px] lg:w-[420px] flex flex-col justify-center gap-5 pr-8">
               <SectionLabel>Anwendungen</SectionLabel>
-              <TextReveal
-                text="Ihr Anwendungsfall — unser Einstieg"
-                tag="h2"
-                className="text-on-surface"
-              />
+              <SectionHeading text="Ihr Anwendungsfall — unser Einstieg" className="text-on-surface" />
               <p className="body-md text-muted-foreground leading-relaxed">
                 Wählen Sie Ihre Anwendung und erfahren Sie, wie pro itech Ihre Prozesskühlung löst.
               </p>
@@ -767,8 +769,8 @@ export default function HomePage() {
                 />
 
                 {/* Layered overlays for depth */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#001030] via-[#001030]/60 to-transparent opacity-90" />
-                <div className="absolute inset-0 bg-gradient-to-br from-[#001b46]/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[var(--primary-deep)] via-[color-mix(in_oklch,var(--primary-deep)_60%,transparent)] to-transparent opacity-90" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[color-mix(in_oklch,var(--primary)_30%,transparent)] to-transparent" />
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-500" />
 
                 {/* Tag */}
@@ -780,7 +782,7 @@ export default function HomePage() {
                 <div className="relative z-10 p-6 pt-20 flex flex-col">
                   <h3
                     className="text-white mb-2 group-hover:text-white transition-colors drop-shadow-sm"
-                    style={{ fontFamily: "var(--font-space-grotesk)", fontSize: "1.375rem", fontWeight: 700, letterSpacing: "-0.015em" }}
+                    style={{ fontFamily: "var(--font-heading)", fontSize: "1.375rem", fontWeight: 700, letterSpacing: "-0.015em" }}
                   >
                     {title}
                   </h3>
@@ -797,148 +799,260 @@ export default function HomePage() {
           </HorizontalScroll>
         </section>
 
-        {/* ── STATS — Product KPIs ─────────────────────────────────────────── */}
-        <section className="relative overflow-hidden noise" style={{ background: "linear-gradient(135deg, #001030 0%, #001b46 50%, #163061 100%)" }}>
-          {/* Decorative radial accent */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-[0.07]" style={{ background: "radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%)" }} />
+        {/* ── STATS + ENERGIEEFFIZIENZ — merged editorial numbers moment ───── */}
+        <section
+          className="relative overflow-hidden noise"
+          style={{ background: "linear-gradient(135deg, var(--primary-deep) 0%, var(--primary) 50%, var(--primary-container) 100%)" }}
+        >
+          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 py-24 lg:py-36">
+            {/* Section header — left-aligned editorial */}
+            <div className="flex flex-col gap-5 max-w-2xl mb-20 lg:mb-28">
+              <Reveal>
+                <SectionLabel light>Belegbare Ergebnisse</SectionLabel>
+              </Reveal>
+              <SectionHeading text="Zahlen, die eine Produktionslinie tragen." className="text-white" />
+              <Reveal delay={0.3}>
+                <p className="body-lg text-white/55 leading-relaxed max-w-xl">
+                  Energieeinsparung und Präzision sind keine Marketingversprechen — sie sind das
+                  Ergebnis systematischer Auslegung und moderner Invertertechnologie.
+                </p>
+              </Reveal>
+            </div>
 
-          <GlowTracker className="relative z-10" color="rgba(22,48,97,0.35)" size={900}>
-            <div className="max-w-7xl mx-auto px-6 lg:px-12 py-24 lg:py-32">
-              {/* Section header */}
-              <div className="flex flex-col items-center text-center mb-16 lg:mb-20">
-                <Reveal>
-                  <SectionLabel light>Belegbare Ergebnisse</SectionLabel>
+            {/* Hero metric + supporting stats */}
+            <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 xl:gap-20 items-start">
+              {/* Hero metric — dominates */}
+              <div className="lg:col-span-7 flex flex-col gap-8">
+                <Reveal delay={0.2}>
+                  <div className="flex items-start gap-4">
+                    <span
+                      className="tabular text-white leading-none"
+                      style={{
+                        fontFamily: "var(--font-heading)",
+                        fontSize: "clamp(5rem, 14vw, 11rem)",
+                        fontWeight: 600,
+                        letterSpacing: "-0.04em",
+                        fontVariationSettings: "'wdth' 100",
+                      }}
+                    >
+                      −40
+                    </span>
+                    <span
+                      className="tabular text-white/60"
+                      style={{
+                        fontFamily: "var(--font-heading)",
+                        fontSize: "clamp(2rem, 5vw, 3.75rem)",
+                        fontWeight: 400,
+                        letterSpacing: "-0.02em",
+                        lineHeight: 1,
+                        marginTop: "0.3em",
+                      }}
+                    >
+                      %
+                    </span>
+                  </div>
                 </Reveal>
-                <TextReveal
-                  text="Zahlen, die für sich sprechen"
-                  tag="h2"
-                  className="text-white mt-3"
-                  stagger={0.035}
-                />
+
+                <Reveal delay={0.35}>
+                  <div className="flex flex-col gap-4 max-w-md">
+                    <span className="label-sm text-secondary">Energieeinsparung</span>
+                    <p className="body-md text-white/65 leading-relaxed">
+                      gegenüber konventionellen Festdrehzahl-Systemen durch Invertertechnik,
+                      adaptive Regelung und Freikühlung. Dokumentiert in der Auslegungsphase,
+                      verifiziert im Betrieb.
+                    </p>
+                  </div>
+                </Reveal>
+
+                {/* Natural refrigerants editorial note */}
+                <Reveal delay={0.5}>
+                  <div className="flex flex-col gap-2 pt-6 max-w-md">
+                    <span className="label-sm text-white/40">Natürliche Kältemittel</span>
+                    <p className="body-md text-white/55 leading-relaxed">
+                      R290 und R744 — für zukunftssichere Betriebsgenehmigungen und echte CO₂-Reduktion.
+                    </p>
+                  </div>
+                </Reveal>
               </div>
 
-              {/* KPI cards grid */}
-              <StaggerContainer stagger={0.1} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
-                {[
-                  { value: "<18", unit: "Monate", label: "Amortisation", product: "FREE Nass-Trocken-Kühler", target: 18, prefix: "<" },
-                  { value: "20", unit: "%", label: "Wirkungsgradsteigerung", product: "AIR Extruder-Folienkühlgerät", target: 20, prefix: "bis zu " },
-                  { value: "15–20", unit: "%", label: "Produktionssteigerung", product: "BLASTAIR-System", target: 20, prefix: "", range: "15–" },
-                  { value: "±0,3", unit: "°C", label: "Genauigkeit", product: "ACCURA-System", target: 0.3, prefix: "±", decimals: 1 },
-                  { value: "300", unit: "°C", label: "Maximaltemperatur", product: "300 °C Temperiergerät", target: 300, prefix: "bis " },
-                  { value: "–35", unit: "°C", label: "Trockene Luft / –55 °C Taupunkt", product: "BLASTAIR-System", target: 35, prefix: "–" },
-                ].map(({ label, product, target, prefix, unit, decimals, range }, i) => (
-                  <StaggerItem key={label + i}>
-                    <Magnetic strength={0.08}>
-                      <div className="group relative h-full p-6 lg:p-7 rounded-sm overflow-hidden transition-all duration-500 cursor-default"
-                        style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)", border: "1px solid rgba(255,255,255,0.06)" }}
+              {/* Supporting stats column */}
+              <div className="lg:col-span-5">
+                <StaggerContainer stagger={0.09} className="flex flex-col">
+                  {[
+                    { number: "±0,3", unit: "°C", label: "Regelgenauigkeit", product: "ACCURA-System" },
+                    { number: "300", unit: "°C", label: "Maximaltemperatur", product: "300 °C Temperiergerät" },
+                    { number: "2–629", unit: "kW", label: "Kälteleistung", product: "MINI bis MASTER" },
+                    { number: "<18", unit: "Monate", label: "Amortisation", product: "FREE Nass-Trocken-Kühler" },
+                    { number: "−55", unit: "°C", label: "Taupunkt / trockene Luft", product: "BLASTAIR-System" },
+                  ].map(({ number, unit, label, product }, i, arr) => (
+                    <StaggerItem key={label}>
+                      <div
+                        className="flex flex-col gap-2"
+                        style={{
+                          paddingBlock: i === 0 ? "0 clamp(1.75rem, 3vw, 2.5rem)" : i === arr.length - 1 ? "clamp(1.75rem, 3vw, 2.5rem) 0" : "clamp(1.75rem, 3vw, 2.5rem)",
+                        }}
                       >
-                        {/* Hover glow */}
-                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-sm" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(22,48,97,0.4) 0%, transparent 70%)" }} />
-                        {/* Top shine line */}
-                        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                        <div className="relative z-10 flex flex-col gap-4">
-                          {/* Counter */}
-                          <div className="flex items-baseline gap-1.5">
-                            <span
-                              style={{
-                                fontFamily: "var(--font-space-grotesk)",
-                                fontSize: "clamp(2.25rem, 4.5vw, 3.25rem)",
-                                fontWeight: 700,
-                                letterSpacing: "-0.03em",
-                                lineHeight: 1,
-                                color: "white",
-                              }}
-                            >
-                              {range ? (
-                                <>{range}<Counter target={target} suffix="" prefix="" className="" duration={2} decimals={decimals || 0} /></>
-                              ) : (
-                                <Counter target={target} suffix="" prefix={prefix || ""} className="" duration={2.2} decimals={decimals || 0} />
-                              )}
-                            </span>
-                            <span className="text-white/40 font-medium" style={{ fontFamily: "var(--font-space-grotesk)", fontSize: "clamp(1rem, 2vw, 1.375rem)" }}>{unit}</span>
-                          </div>
-
-                          {/* Label */}
-                          <span className="label-md text-white/60 group-hover:text-white/80 transition-colors duration-300">{label}</span>
-
-                          {/* Divider */}
-                          <div className="h-px w-full bg-white/[0.06] group-hover:bg-white/[0.12] transition-colors duration-500" />
-
-                          {/* Product badge */}
-                          <div className="flex items-center gap-2">
-                            <div className="w-1.5 h-1.5 rounded-full bg-secondary/70 group-hover:bg-secondary transition-colors duration-300 shrink-0" />
-                            <span className="text-white/30 text-xs font-medium tracking-wide group-hover:text-white/50 transition-colors duration-300">{product}</span>
-                          </div>
+                        <div className="flex items-baseline gap-2">
+                          <span
+                            className="tabular text-white leading-none"
+                            style={{
+                              fontFamily: "var(--font-heading)",
+                              fontSize: "clamp(2.25rem, 4.2vw, 3.25rem)",
+                              fontWeight: 600,
+                              letterSpacing: "-0.025em",
+                            }}
+                          >
+                            {number}
+                          </span>
+                          <span
+                            className="text-white/50"
+                            style={{
+                              fontFamily: "var(--font-heading)",
+                              fontSize: "clamp(1rem, 1.8vw, 1.375rem)",
+                              fontWeight: 400,
+                            }}
+                          >
+                            {unit}
+                          </span>
+                        </div>
+                        <div className="flex flex-col gap-0.5">
+                          <span className="label-md text-white/75">{label}</span>
+                          <span className="label-sm text-white/30">{product}</span>
                         </div>
                       </div>
-                    </Magnetic>
-                  </StaggerItem>
-                ))}
-              </StaggerContainer>
+                    </StaggerItem>
+                  ))}
+                </StaggerContainer>
+              </div>
             </div>
-          </GlowTracker>
+          </div>
         </section>
 
-        {/* ── 5. PORTFOLIO-BREITE ───────────────────────────────────────────── */}
+        {/* ── 5. PORTFOLIO-BREITE — spec-table typography ───────────────────── */}
         <section className="bg-surface section-pad">
           <div className="max-w-7xl mx-auto px-6 lg:px-12">
-            <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-              <div className="lg:col-span-5 flex flex-col gap-6 lg:sticky lg:top-28">
-                <Reveal><SectionLabel>Technisches Portfolio</SectionLabel></Reveal>
-                <SectionHeading text="Breit aufgestellt — für jeden Lösungsraum" className="text-on-surface" />
-                <Reveal delay={0.2}>
-                  <p className="body-md text-muted-foreground leading-relaxed">
-                    Das pro itech Portfolio deckt das gesamte Spektrum industrieller
-                    Kälte- und Temperiertechnik ab. Technische Entscheider finden hier
-                    schnell Orientierung, ob ihr Anforderungsbereich abgedeckt ist.
-                  </p>
-                </Reveal>
-                <Reveal delay={0.3}>
-                  <Magnetic>
-                    <a href="#" className="inline-flex items-center gap-2 label-md text-primary hover:text-secondary transition-colors group">
+            <div className="flex flex-col gap-16 lg:gap-24">
+              {/* Header — asymmetric, top-left */}
+              <div className="grid lg:grid-cols-12 gap-8 items-end">
+                <div className="lg:col-span-7 flex flex-col gap-5">
+                  <Reveal><SectionLabel>Technisches Portfolio</SectionLabel></Reveal>
+                  <SectionHeading text="Breit aufgestellt — für jeden Lösungsraum." className="text-on-surface" />
+                </div>
+                <div className="lg:col-span-5 flex flex-col gap-4 lg:pb-2">
+                  <Reveal delay={0.2}>
+                    <p className="body-md text-muted-foreground leading-relaxed max-w-sm">
+                      Das Portfolio deckt das gesamte Spektrum industrieller Kälte- und
+                      Temperiertechnik ab — schnelle Orientierung für technische Entscheider.
+                    </p>
+                  </Reveal>
+                  <Reveal delay={0.3}>
+                    <a
+                      href="#"
+                      className="inline-flex items-center gap-2 label-md text-primary hover:text-secondary transition-colors group w-fit"
+                    >
                       Technische Übersicht
                       <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" strokeWidth={2} />
                     </a>
-                  </Magnetic>
-                </Reveal>
+                  </Reveal>
+                </div>
               </div>
 
-              <StaggerContainer stagger={0.1} className="lg:col-span-7 grid sm:grid-cols-2 gap-5">
+              {/* Two spec columns */}
+              <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
                 {[
                   {
-                    icon: Wind,
+                    code: "A",
                     category: "Kältemaschinen",
-                    items: ["Luftgekühlte Kältemaschinen", "Wassergekühlte Kältemaschinen", "Inverter- / Hybrid-Systeme", "Freikühlung / adiabate Kühlung", "Natürliche Kältemittel (R290, R744)"],
+                    range: "2 – 629 kW",
+                    items: [
+                      { name: "Luftgekühlte Systeme", meta: "scroll · screw" },
+                      { name: "Wassergekühlte Systeme", meta: "scroll · screw" },
+                      { name: "Inverter- und Hybrid-Architektur", meta: "variable drehzahl" },
+                      { name: "Freikühlung und adiabate Kühlung", meta: "TCO-optimiert" },
+                      { name: "Natürliche Kältemittel", meta: "R290 · R744" },
+                    ],
                   },
                   {
-                    icon: Droplets,
+                    code: "B",
                     category: "Temperiergeräte",
-                    items: ["Wasser-Temperiergeräte bis 160 °C", "Öl-Temperiergeräte bis 350 °C", "Hochtemperatur-Systeme", "Druckwasser-Systeme", "Kühl-/Heiz-Kombisysteme"],
+                    range: "bis 350 °C",
+                    items: [
+                      { name: "Wasser-Temperiergeräte", meta: "bis 160 °C" },
+                      { name: "Öl-Temperiergeräte", meta: "bis 350 °C" },
+                      { name: "Hochtemperatur-Systeme", meta: "druckbasiert" },
+                      { name: "Druckwasser-Systeme", meta: "bis 6 bar" },
+                      { name: "Kühl- und Heiz-Kombisysteme", meta: "reversibel" },
+                    ],
                   },
-                ].map(({ icon: Icon, category, items }) => (
-                  <StaggerItem key={category}>
-                    <TiltCard intensity={5}>
-                      <div className="flex flex-col gap-5 p-7 bg-surface-container-low shadow-ambient hover:bg-surface-container-high transition-colors duration-300">
-                        <div className="flex items-center gap-3">
-                          <div className="flex items-center justify-center w-10 h-10 bg-primary/[0.06] rounded-sm">
-                            <Icon className="w-[18px] h-[18px] text-primary" strokeWidth={1.5} />
-                          </div>
-                          <h3 className="title-sm font-semibold text-on-surface">{category}</h3>
+                ].map(({ code, category, range, items }) => (
+                  <Reveal key={category}>
+                    <div className="flex flex-col">
+                      {/* Header row */}
+                      <div className="flex items-baseline justify-between gap-6 pb-5">
+                        <div className="flex items-baseline gap-4">
+                          <span
+                            className="tabular text-on-surface/25"
+                            style={{
+                              fontFamily: "var(--font-heading)",
+                              fontSize: "1.25rem",
+                              fontWeight: 500,
+                              letterSpacing: "0.08em",
+                            }}
+                          >
+                            {code}
+                          </span>
+                          <h3
+                            className="text-on-surface"
+                            style={{
+                              fontFamily: "var(--font-heading)",
+                              fontSize: "clamp(1.5rem, 2.5vw, 2rem)",
+                              fontWeight: 600,
+                              letterSpacing: "-0.01em",
+                              lineHeight: 1.15,
+                            }}
+                          >
+                            {category}
+                          </h3>
                         </div>
-                        <ul className="flex flex-col gap-2.5">
-                          {items.map((item) => (
-                            <li key={item} className="flex items-start gap-2.5 body-sm text-muted-foreground">
-                              <span className="mt-[7px] w-1 h-1 rounded-full bg-secondary shrink-0" />
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
+                        <span
+                          className="tabular label-md text-secondary shrink-0"
+                          style={{ fontFamily: "var(--font-heading)" }}
+                        >
+                          {range}
+                        </span>
                       </div>
-                    </TiltCard>
-                  </StaggerItem>
+
+                      {/* Spec list */}
+                      <ul className="flex flex-col">
+                        {items.map((item, idx) => (
+                          <li
+                            key={item.name}
+                            className="group grid grid-cols-[auto_1fr_auto] items-baseline gap-4 py-4"
+                            style={{
+                              paddingTop: idx === 0 ? "1.25rem" : "1rem",
+                              paddingBottom: "1rem",
+                            }}
+                          >
+                            <span
+                              className="tabular text-on-surface/30 group-hover:text-secondary transition-colors duration-500"
+                              style={{
+                                fontFamily: "var(--font-heading)",
+                                fontSize: "0.75rem",
+                                fontWeight: 500,
+                                letterSpacing: "0.06em",
+                              }}
+                            >
+                              {String(idx + 1).padStart(2, "0")}
+                            </span>
+                            <span className="body-md text-on-surface">{item.name}</span>
+                            <span className="tabular label-sm text-on-surface-subtle">{item.meta}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </Reveal>
                 ))}
-              </StaggerContainer>
+              </div>
             </div>
           </div>
         </section>
@@ -990,7 +1104,7 @@ export default function HomePage() {
                         <div className="shrink-0 relative z-10 flex items-center justify-center w-[30px] h-[30px] bg-surface-container-low group-hover:bg-surface-container-high transition-colors">
                           <span
                             className="text-secondary"
-                            style={{ fontFamily: "var(--font-space-grotesk)", fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.04em" }}
+                            style={{ fontFamily: "var(--font-heading)", fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.04em" }}
                           >
                             {step}
                           </span>
@@ -1008,110 +1122,133 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── 7. ENERGIEEFFIZIENZ ───────────────────────────────────────────── */}
-        <section className="relative overflow-hidden noise" style={{ background: "linear-gradient(145deg, #001030 0%, #001b46 40%, #163061 100%)" }}>
-          {/* Subtle radial glow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[60vh] opacity-20" style={{ background: "radial-gradient(ellipse, rgba(22,48,97,0.6) 0%, transparent 60%)" }} />
-
-          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 section-pad">
-            <div className="flex flex-col items-center text-center gap-14">
-              <div className="flex flex-col gap-4 max-w-2xl">
-                <Reveal><SectionLabel light>Energieeffizienz & Wirtschaftlichkeit</SectionLabel></Reveal>
-                <SectionHeading
-                  text="Niedrigster TCO als Konstruktionsprinzip"
-                  className="text-white"
-                />
-                <Reveal delay={0.2}>
-                  <p className="body-md text-white/50 leading-relaxed">
-                    Energieeinsparung und CO₂-Reduktion sind keine Marketingversprechen —
-                    sie sind das Ergebnis systematischer Systemauslegung und moderner Invertertechnologie.
-                  </p>
-                </Reveal>
-              </div>
-
-              <StaggerContainer stagger={0.12} className="grid sm:grid-cols-3 gap-5 w-full">
-                {[
-                  { icon: BarChart3, metric: "–40 %", metricTarget: 40, label: "Energieeinsparung", desc: "gegenüber konventionellen Festdrehzahl-Systemen durch Invertertechnik und Freikühlung" },
-                  { icon: TrendingDown, metric: "TCO", metricTarget: null, label: "Investitionssicherheit", desc: "Betriebskosten werden bereits in der Auslegungsphase berücksichtigt und dokumentiert" },
-                  { icon: Wind, metric: "CO₂", metricTarget: null, label: "Natürliche Kältemittel", desc: "Systeme mit R290 und R744 für zukunftssichere Betriebsgenehmigungen und Nachhaltigkeit" },
-                ].map(({ icon: Icon, metric, label, desc }) => (
-                  <StaggerItem key={label}>
-                    <TiltCard className="h-full" intensity={5}>
-                      <div
-                        className="flex flex-col gap-5 p-8 text-left h-full shadow-ambient"
-                        style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(8px)" }}
-                      >
-                        <div className="flex items-center justify-center w-10 h-10 rounded-sm" style={{ background: "rgba(255,255,255,0.1)" }}>
-                          <Icon className="w-[18px] h-[18px]" style={{ color: "#e2e8f0" }} strokeWidth={1.5} />
-                        </div>
-                        <div>
-                          <div style={{ fontFamily: "var(--font-space-grotesk)", fontSize: "2rem", fontWeight: 700, letterSpacing: "-0.03em", color: "white", lineHeight: 1 }}>
-                            {metric}
-                          </div>
-                          <div className="label-md mt-1" style={{ color: "#94a3b8" }}>{label}</div>
-                        </div>
-                        <p className="body-sm text-white/60 leading-relaxed">{desc}</p>
-                      </div>
-                    </TiltCard>
-                  </StaggerItem>
-                ))}
-              </StaggerContainer>
-            </div>
-          </div>
-        </section>
-
-        {/* ── 8. SERVICE ────────────────────────────────────────────────────── */}
+        {/* ── 7. SERVICE ────────────────────────────────────────────────────── */}
         <section className="bg-surface section-pad">
           <div className="max-w-7xl mx-auto px-6 lg:px-12">
-            <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-              <div className="lg:col-span-5 flex flex-col gap-5 lg:sticky lg:top-28">
+            {/* Header label spanning the top */}
+            <div className="mb-16 lg:mb-24 grid lg:grid-cols-12 gap-10 lg:gap-16 items-end">
+              <div className="lg:col-span-7">
                 <Reveal><SectionLabel>Service & After Sales</SectionLabel></Reveal>
-                <SectionHeading text="Betriebssicherheit über den Liefertag hinaus" className="text-on-surface" />
-                <Reveal delay={0.2}>
-                  <p className="body-md text-muted-foreground leading-relaxed">
+                <div className="mt-5">
+                  <SectionHeading text="Betriebssicherheit über den Liefertag hinaus" className="text-on-surface" />
+                </div>
+              </div>
+              <div className="lg:col-span-4 lg:col-start-9">
+                <Reveal delay={0.15}>
+                  <p className="body-md text-muted-foreground leading-relaxed max-w-md">
                     Industrielle Kühltechnik ist kritische Infrastruktur. Unser
-                    Servicemodell minimiert Ausfallzeiten und gewährleistet
-                    langfristige Betriebssicherheit.
+                    Servicemodell ist so konzipiert, dass Ausfallzeiten messbar
+                    klein bleiben — über die gesamte Anlagenlebensdauer.
                   </p>
                 </Reveal>
-                <Reveal delay={0.3}>
-                  <div className="flex flex-col gap-3 pt-1">
-                    <Magnetic>
-                      <a href="#" className="inline-flex items-center gap-2 label-md text-primary hover:text-secondary transition-colors group">
-                        <Phone className="w-3.5 h-3.5" strokeWidth={1.5} />
-                        Service kontaktieren
-                      </a>
-                    </Magnetic>
-                    <Magnetic>
-                      <a href="#" className="inline-flex items-center gap-2 label-md text-primary hover:text-secondary transition-colors group">
-                        <Mail className="w-3.5 h-3.5" strokeWidth={1.5} />
-                        Wartungsvertrag anfragen
-                      </a>
-                    </Magnetic>
-                  </div>
-                </Reveal>
               </div>
+            </div>
 
-              <StaggerContainer stagger={0.08} className="lg:col-span-7 grid sm:grid-cols-2 gap-4">
-                {[
-                  { icon: Wrench, title: "Wartung & Inspektion", desc: "Planmäßige Wartung nach Herstellervorgaben — präventiv, dokumentiert und mit Servicebericht." },
-                  { icon: Clock, title: "Störungsservice", desc: "Schnelle Reaktionszeit bei Störungen — regional organisierter Außendienst aus Deutschland." },
-                  { icon: Settings2, title: "Ersatzteile & Retrofit", desc: "Originalersatzteile und technische Upgrades — auch für ältere Anlagen zur Laufzeitverlängerung." },
-                  { icon: Calendar, title: "Wartungsverträge", desc: "Planungssicherheit durch individuelle Serviceverträge — mit definierten Reaktionszeiten." },
-                ].map(({ icon: Icon, title, desc }) => (
-                  <StaggerItem key={title}>
-                    <TiltCard className="h-full" intensity={6}>
-                      <div className="flex flex-col gap-3 p-6 h-full bg-surface-container-low hover:bg-surface-container-high transition-colors duration-300 shadow-ambient group">
-                        <div className="flex items-center justify-center w-10 h-10 bg-primary/[0.06] rounded-sm group-hover:bg-primary/[0.1] transition-colors duration-300">
-                          <Icon className="w-[18px] h-[18px] text-primary" strokeWidth={1.5} />
-                        </div>
-                        <h3 className="title-sm font-semibold text-on-surface">{title}</h3>
-                        <p className="body-sm text-muted-foreground leading-relaxed">{desc}</p>
+            {/* Editorial spec rows — metric on the right, label left, content middle */}
+            <StaggerContainer stagger={0.09} className="flex flex-col">
+              {[
+                {
+                  label: "Instandhaltung",
+                  title: "Wartung & Inspektion",
+                  desc: "Planmäßige Wartung nach Herstellervorgaben und VDMA 24186. Dokumentiert, mit Servicebericht und Messprotokoll — die Grundlage für jede Betriebsgenehmigung.",
+                  metric: "VDMA",
+                  metricSub: "24186",
+                },
+                {
+                  label: "Störungsservice",
+                  title: "Reaktion innerhalb 24 Stunden",
+                  desc: "Bundesweit regional organisierter Außendienst aus Deutschland. Ferndiagnose über die eingebaute Telemetrie, Eskalationsstufen vertraglich definiert.",
+                  metric: "< 24",
+                  metricSub: "Std. DE-weit",
+                },
+                {
+                  label: "Ersatzteile",
+                  title: "Originalteile & Retrofit",
+                  desc: "Originalersatzteile für aktuelle und ältere Baureihen. Technische Upgrades zur Laufzeitverlängerung — auch Komponenten, die im Markt nicht mehr gelistet sind.",
+                  metric: "10+",
+                  metricSub: "Jahre Nachkauf",
+                },
+                {
+                  label: "Serviceverträge",
+                  title: "SLA-basierte Wartungsverträge",
+                  desc: "Planbare Budgets durch individuell kalkulierte Verträge. Reaktionszeiten, Ersatzteilverfügbarkeit und Wartungsintervalle werden anlagen­spezifisch fixiert.",
+                  metric: "SLA",
+                  metricSub: "individuell",
+                },
+              ].map(({ label, title, desc, metric, metricSub }, i) => (
+                <StaggerItem key={title}>
+                  <div
+                    className="group grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-10 items-start"
+                    style={{
+                      paddingBlock: i === 0 ? "0 clamp(2.5rem, 4.5vw, 3.75rem)" : "clamp(2.5rem, 4.5vw, 3.75rem)",
+                    }}
+                  >
+                    {/* Left — category label */}
+                    <div className="lg:col-span-3">
+                      <span className="label-sm text-on-surface/45 group-hover:text-secondary transition-colors duration-500">
+                        — {label}
+                      </span>
+                    </div>
+
+                    {/* Middle — title + body */}
+                    <div className="lg:col-span-6 flex flex-col gap-3">
+                      <h3
+                        className="text-on-surface"
+                        style={{
+                          fontFamily: "var(--font-heading)",
+                          fontSize: "clamp(1.5rem, 2.4vw, 2rem)",
+                          fontWeight: 600,
+                          letterSpacing: "-0.015em",
+                          lineHeight: 1.15,
+                        }}
+                      >
+                        {title}
+                      </h3>
+                      <p className="body-md text-muted-foreground leading-relaxed max-w-[56ch]">
+                        {desc}
+                      </p>
+                    </div>
+
+                    {/* Right — metric */}
+                    <div className="lg:col-span-3 flex lg:justify-end">
+                      <div className="flex flex-col lg:items-end gap-1">
+                        <span
+                          className="tabular text-on-surface group-hover:text-secondary transition-colors duration-500"
+                          style={{
+                            fontFamily: "var(--font-heading)",
+                            fontSize: "clamp(2rem, 3.6vw, 3rem)",
+                            fontWeight: 500,
+                            letterSpacing: "-0.025em",
+                            lineHeight: 0.95,
+                            fontVariationSettings: "'wdth' 95",
+                          }}
+                        >
+                          {metric}
+                        </span>
+                        <span className="label-sm text-on-surface/50">
+                          {metricSub}
+                        </span>
                       </div>
-                    </TiltCard>
-                  </StaggerItem>
-                ))}
-              </StaggerContainer>
+                    </div>
+                  </div>
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+
+            {/* Contact row */}
+            <div className="mt-12 lg:mt-16 pt-10 flex flex-col sm:flex-row gap-6 sm:gap-10">
+              <Magnetic>
+                <a href="#" className="inline-flex items-center gap-2.5 label-md text-primary hover:text-secondary transition-colors">
+                  <Phone className="w-3.5 h-3.5" strokeWidth={1.5} />
+                  Service-Hotline kontaktieren
+                </a>
+              </Magnetic>
+              <Magnetic>
+                <a href="#" className="inline-flex items-center gap-2.5 label-md text-primary hover:text-secondary transition-colors">
+                  <Mail className="w-3.5 h-3.5" strokeWidth={1.5} />
+                  Wartungsvertrag anfragen
+                </a>
+              </Magnetic>
             </div>
           </div>
         </section>
@@ -1122,16 +1259,16 @@ export default function HomePage() {
           color="rgba(188,1,0,0.08)"
           size={800}
         >
-          <section className="section-pad noise" style={{ background: "#001b46" }}>
+          <section className="section-pad noise" style={{ background: "var(--primary)" }}>
             <div className="max-w-7xl mx-auto px-6 lg:px-12">
               <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
                 {/* Project inquiry */}
                 <Reveal>
                   <div className="flex flex-col gap-6 p-8 lg:p-10 h-full" style={{ background: "rgba(255,255,255,0.03)" }}>
                     <div className="flex flex-col gap-3">
-                      <span className="label-sm" style={{ color: "#bc0100" }}>— Projekt anfragen</span>
+                      <span className="label-sm" style={{ color: "var(--secondary)" }}>— Projekt anfragen</span>
                       <h2
-                        style={{ fontFamily: "var(--font-space-grotesk)", fontSize: "1.75rem", fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.15, color: "white" }}
+                        style={{ fontFamily: "var(--font-heading)", fontSize: "1.75rem", fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.15, color: "white" }}
                       >
                         Sie haben ein Projekt oder eine Anforderung?
                       </h2>
@@ -1165,9 +1302,9 @@ export default function HomePage() {
                 <Reveal delay={0.15}>
                   <div className="flex flex-col gap-6 p-8 lg:p-10 h-full" style={{ background: "rgba(255,255,255,0.03)" }}>
                     <div className="flex flex-col gap-3">
-                      <span className="label-sm" style={{ color: "#bc0100" }}>— Service kontaktieren</span>
+                      <span className="label-sm" style={{ color: "var(--secondary)" }}>— Service kontaktieren</span>
                       <h2
-                        style={{ fontFamily: "var(--font-space-grotesk)", fontSize: "1.75rem", fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.15, color: "white" }}
+                        style={{ fontFamily: "var(--font-heading)", fontSize: "1.75rem", fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.15, color: "white" }}
                       >
                         Störung, Wartung oder Ersatzteilbedarf?
                       </h2>
@@ -1213,7 +1350,7 @@ export default function HomePage() {
       </main>
 
       {/* ── FOOTER ────────────────────────────────────────────────────────────── */}
-      <footer style={{ background: "#000d23" }}>
+      <footer style={{ background: "var(--primary-deep)" }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-12 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
           <a href="/">
             <Image src="/logo.webp" alt="itech cooling solutions" width={360} height={120} className="h-32 w-auto brightness-0 invert" />

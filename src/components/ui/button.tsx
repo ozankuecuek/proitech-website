@@ -10,9 +10,9 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        /* Primary brand — gradient fill, industrial sharp edge */
+        /* Primary brand — tonal gradient from primary to primary-container, industrial sharp edge */
         default:
-          "bg-gradient-to-r from-[#001b46] to-[#163061] text-[#faf8ff] title-sm hover:brightness-110",
+          "bg-gradient-to-r from-[var(--primary)] to-[var(--primary-container)] text-primary-foreground title-sm hover:brightness-110",
         /* Secondary alert — vibrant red */
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/85",

@@ -6,9 +6,9 @@
 
 @theme inline {
   /* ── Fonts ── */
-  --font-sans: var(--font-inter);
+  --font-sans: var(--font-host);
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-space-grotesk);
+  --font-heading: var(--font-bricolage);
 
   /* ── Radius — sharp, industrial ── */
   --radius-sm: calc(var(--radius) * 0.6);
@@ -54,28 +54,66 @@
 
   /* ── Brand-specific extended tokens ── */
   --color-primary-container: var(--primary-container);
+  --color-primary-deep: var(--primary-deep);
   --color-surface: var(--surface);
   --color-surface-container-low: var(--surface-container-low);
   --color-surface-container-high: var(--surface-container-high);
   --color-on-surface: var(--on-surface);
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   PALETTE — OKLCH-based
+   Single source of truth for the brand. Neutrals are tinted toward the brand
+   hue (navy, ~262) so surfaces feel related to the brand, not generic gray.
+   Chroma is reduced toward the extremes of the lightness axis to avoid the
+   garish look high-chroma near-white/near-black produces.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 :root {
-  /* ── Brand Palette ── */
-  --primary: #001b46;
-  --primary-container: #163061;
-  --primary-foreground: #faf8ff;
+  /* ── Core hues ── */
+  --hue-brand: 262;   /* Navy */
+  --hue-accent: 29;   /* Vibrant red */
 
-  --secondary: #bc0100;
-  --secondary-foreground: #faf8ff;
+  /* ── Primary scale (navy) ── */
+  --primary-950: oklch(0.14 0.070 var(--hue-brand));
+  --primary-900: oklch(0.219 0.085 var(--hue-brand));   /* ≈ former #001b46 */
+  --primary-800: oklch(0.316 0.095 var(--hue-brand));   /* ≈ former #163061 */
+  --primary-700: oklch(0.42 0.100 var(--hue-brand));
+  --primary-600: oklch(0.53 0.105 var(--hue-brand));
+  --primary-500: oklch(0.64 0.095 var(--hue-brand));
+  --primary-400: oklch(0.74 0.072 var(--hue-brand));
+  --primary-300: oklch(0.83 0.048 var(--hue-brand));
+  --primary-200: oklch(0.908 0.022 var(--hue-brand));   /* ≈ former #e1e8ff */
+  --primary-100: oklch(0.958 0.010 var(--hue-brand));   /* ≈ former #f1f3ff */
+  --primary-50:  oklch(0.985 0.005 var(--hue-brand));   /* ≈ former #faf8ff */
 
-  /* ── Surface Tiers ── */
-  --surface: #faf8ff;
-  --surface-container-low: #f1f3ff;
-  --surface-container-high: #e1e8ff;
-  --on-surface: #001944;
+  /* ── Accent scale (red — used sparingly for critical signal only) ── */
+  --accent-700: oklch(0.38 0.175 var(--hue-accent));
+  --accent-600: oklch(0.44 0.195 var(--hue-accent));
+  --accent-500: oklch(0.483 0.205 var(--hue-accent));   /* ≈ former #bc0100 */
+  --accent-400: oklch(0.56 0.200 var(--hue-accent));
+  --accent-300: oklch(0.66 0.170 var(--hue-accent));
 
-  /* ── shadcn Semantic Mappings ── */
+  /* ── Semantic brand tokens ── */
+  --primary: var(--primary-900);
+  --primary-container: var(--primary-800);
+  --primary-deep: var(--primary-950);
+  --primary-foreground: var(--primary-50);
+
+  --secondary: var(--accent-500);
+  --secondary-foreground: var(--primary-50);
+
+  /* ── Surface tiers ── */
+  --surface: var(--primary-50);
+  --surface-container-low: var(--primary-100);
+  --surface-container-high: var(--primary-200);
+
+  /* ── Text ── */
+  --on-surface: oklch(0.205 0.080 var(--hue-brand));
+  --on-surface-muted: oklch(0.48 0.030 var(--hue-brand));
+  --on-surface-subtle: oklch(0.62 0.020 var(--hue-brand));
+
+  /* ── shadcn semantic mappings ── */
   --background: var(--surface);
   --foreground: var(--on-surface);
   --card: var(--surface-container-low);
@@ -83,21 +121,21 @@
   --popover: var(--surface);
   --popover-foreground: var(--on-surface);
   --muted: var(--surface-container-high);
-  --muted-foreground: color-mix(in srgb, var(--on-surface) 55%, transparent);
+  --muted-foreground: var(--on-surface-muted);
   --accent: var(--surface-container-high);
   --accent-foreground: var(--on-surface);
-  --destructive: #dc2626;
-  --border: color-mix(in srgb, var(--on-surface) 15%, transparent);
+  --destructive: oklch(0.55 0.22 27);
+  --border: color-mix(in oklch, var(--on-surface) 15%, transparent);
   --input: var(--surface-container-high);
-  --ring: color-mix(in srgb, var(--primary) 20%, transparent);
+  --ring: color-mix(in oklch, var(--primary) 25%, transparent);
   --radius: 0.25rem;
 
   /* ── Charts ── */
-  --chart-1: #001b46;
-  --chart-2: #163061;
-  --chart-3: #bc0100;
-  --chart-4: #f1f3ff;
-  --chart-5: #e1e8ff;
+  --chart-1: var(--primary-900);
+  --chart-2: var(--primary-800);
+  --chart-3: var(--accent-500);
+  --chart-4: var(--primary-100);
+  --chart-5: var(--primary-200);
 
   /* ── Sidebar ── */
   --sidebar: var(--surface-container-low);
@@ -106,8 +144,8 @@
   --sidebar-primary-foreground: var(--primary-foreground);
   --sidebar-accent: var(--surface-container-high);
   --sidebar-accent-foreground: var(--on-surface);
-  --sidebar-border: color-mix(in srgb, var(--on-surface) 15%, transparent);
-  --sidebar-ring: color-mix(in srgb, var(--primary) 20%, transparent);
+  --sidebar-border: color-mix(in oklch, var(--on-surface) 15%, transparent);
+  --sidebar-ring: color-mix(in oklch, var(--primary) 25%, transparent);
 }
 
 @layer base {
@@ -118,6 +156,7 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    font-feature-settings: "ss01", "cv11", "tnum";
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -143,21 +182,21 @@
 }
 
 @layer components {
-  /* ── Glassmorphism panel ── */
+  /* ── Glassmorphism — reserved for the floating nav only ── */
   .glass {
-    background: color-mix(in srgb, var(--surface) 60%, transparent);
+    background: color-mix(in oklch, var(--surface) 60%, transparent);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
   }
 
-  /* ── Hero gradient: primary → primary-container ── */
+  /* ── Hero gradient: primary-deep → primary-container ── */
   .hero-gradient {
-    background: linear-gradient(135deg, #001b46 0%, #163061 100%);
+    background: linear-gradient(135deg, var(--primary-deep) 0%, var(--primary-container) 100%);
   }
 
   /* ── Floating element shadow (tinted, never pure black) ── */
   .shadow-ambient {
-    box-shadow: 0 20px 40px rgba(0, 25, 68, 0.06);
+    box-shadow: 0 20px 40px color-mix(in oklch, var(--primary) 8%, transparent);
   }
 
   /* ── Section padding: space-16 to space-20 (5.5–7rem) ── */
@@ -236,6 +275,12 @@
     letter-spacing: 0.06em;
     text-transform: uppercase;
   }
+
+  /* ── Tabular numerals for spec tables and capacity figures ── */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -313,4 +358,16 @@
 /* Smooth scroll */
 html {
   scroll-behavior: smooth;
+}
+
+/* Respect reduced motion — disable decorative infinite animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
